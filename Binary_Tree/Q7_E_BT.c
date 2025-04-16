@@ -100,9 +100,28 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int smallestValue(BTNode *node)
-{
-	/* add your code here */
+int smallestValue(BTNode *node){
+    /* DFS 반복형으로 풀어보자. 
+        트리는 순환 x => visited 체크 필요 x.
+    */
+
+    int minVal = node->item; // 기본으로 int의 최댓값을 넣음
+    Stack stk;
+    push(&stk, node);
+
+    while (stk.top != NULL){
+        BTNode* curr = pop(&stk);
+        
+        if (curr->item < minVal)
+            minVal = curr->item; // 최솟값 담기
+
+        // 아래 두 개는 다음으로 가는 부분
+        if (curr->right != NULL)
+            push(&stk, curr->right);
+
+        if (curr->left != NULL)
+            push(&stk, curr->left);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -107,9 +107,24 @@ int main()
 
 ////////////////////////////////////////////////////////////
 
-void recursiveReverse(Queue *q)
-{
-/* add your code here */
+/* 5. (recursiveReverseQueue) Write a recursive C function recursiveReverseQueue()
+	that reverses the order of items stored in a queue of integers.
+
+	The function prototype is given as follows:
+	void recursiveReverseQueue(Queue *q);
+
+	For example, if the queue is (1, 2, 3, 4, 5), then the resulting queue will be (5, 4, 3, 2, 1).
+*/
+
+void recursiveReverse(Queue *q){
+	int item;
+	
+	if (q == NULL || isEmptyQueue(q))
+		return;
+
+	item = dequeue(q);
+	recursiveReverse(q); 
+	enqueue(q, item);
 }
 
 //////////////////////////////////////////////////////////////////

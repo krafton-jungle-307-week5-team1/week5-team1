@@ -37,15 +37,13 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
-int main()
-{
+int main(){
 	LinkedList ll;
 	int c, i, j;
 	c = 1;
 	//Initialize the linked list 1 as an empty linked list
 	ll.head = NULL;
 	ll.size = 0;
-
 
 	printf("1: Insert an integer to the linked list:\n");
 	printf("2: Move all odd integers to the back of the linked list:\n");
@@ -84,9 +82,56 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void moveOddItemsToBack(LinkedList *ll)
-{
-	/* add your code here */
+void moveOddItemsToBack(LinkedList *ll){
+    // 0. 리스트가 비어있는 경우 그냥 리턴
+    if (ll == NULL || ll->head == NULL)
+		return;
+	
+	// 1. 현재 LL의 마지막 노드를 찾아 저장 - 이때, 원래 tail 위치는 oldTail로 따로 저장해둠
+	ListNode *oldTail = ll->head;
+	while (oldTail->next != NULL) {
+		oldTail = oldTail->next;
+	}
+	ListNode *tail = oldTail;
+
+	// 2. 순회용 *cur를 head로 초기화, 이전 노드를 가리키는 *prev는 NULL로 초기화
+	ListNode *cur = ll -> head;
+	ListNode *prev = NULL;
+
+	// 3. 반복 - cur가 oldTail->next가 될 때까지
+	while (cur != oldTail->next){
+
+	// 4. cur->item이 홀수인지 체크
+		// 4.1. 홀수면?
+		if (cur->item % 2 == 1){
+			// 4.1.1. cur 노드를 리스트에서 분리
+			ListNode *nextNode = cur->next;
+
+			// - prev가 NULL이면, cur == head이므로, head를 cur->next로 갱신
+			// - prev가 NULL이 아니면 prev->next를 cur->next로 갱신
+			if (prev == NULL)
+				ll->head = nextNode;
+			else
+				prev->next = nextNode;
+
+			// 4.1.2. cur 노드를 tail 뒤에 붙이고, cur->next는 NULL로 설정
+			tail->next = cur;
+			cur->next = NULL;
+
+			// 4.1.3. tail 포인터를 cur로 갱신
+			tail = cur;
+
+			// 4.1.4. cur을 다음 노드(nextNode)로 이동시키되, prev는 유지
+			cur = nextNode;
+
+		}else{
+		// 4.2. 짝수면?
+		// a. prev를 cur로 갱신
+		// b. cur을 다음 노드로 이동
+			prev = cur;
+			cur = cur->next;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

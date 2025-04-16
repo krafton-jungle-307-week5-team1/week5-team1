@@ -111,14 +111,63 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void createStackFromLinkedList(LinkedList *ll, Stack *s)
-{
-    /* add your code here */
+/*
+2. (createStackFromLinkedList) Write a C function createStackFromLinkedList()
+	to create a stack (linked-list-based) by pushing all integers that are storing in the linked list.
+	The first node of the linked list is pushed first, and then the second node, and so on.
+	Remember to empty the stack at the beginning, if the stack is not empty.
+
+	The function prototypes are given as follows:
+	void createStackFromLinkedList(LinkedList *ll , Stack *stack);
+
+	A sample input and output session is given below (if the current linked list is 1, 3, 5, 6, 7):
+	The resulting linked list is: 1 3 5 6 7
+	Please input your choice(1/2/3/0): 2
+	The resulting stack is: 7 6 5 3 1
+*/
+
+void createStackFromLinkedList(LinkedList *ll, Stack *s){	
+	ListNode * curr;
+
+	if (s == NULL || ll == NULL)
+		return;
+
+	removeAllItems(&(s->ll)); 
+
+	curr = ll->head;
+
+	while (curr != NULL){
+		push(s, curr->item);
+		curr = curr->next;
+	}
 }
 
-void removeEvenValues(Stack *s)
-{
-	/* add your code here */
+void removeEvenValues(Stack *s){
+	ListNode *curr, *prev, *tmp;
+
+	if (s == NULL || s->ll.head == NULL)
+		return;
+
+	curr = s->ll.head;
+	prev = NULL;
+
+	while (curr != NULL){
+		if (curr->item % 2 == 0){ // 짝
+            if (prev == NULL) { // 첫 노드 제거
+                s->ll.head = curr->next;
+                free(curr);
+                curr = s->ll.head;
+            } else { // 중간/마지막 노드 제거
+                prev->next = curr->next;
+                free(curr);
+                curr = prev->next;
+            }
+            s->ll.size--;
+		}else{ // 홀
+			prev = curr;
+			curr = curr->next;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////
