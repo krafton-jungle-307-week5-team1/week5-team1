@@ -91,10 +91,66 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// BSTNode
+// 	int item;
+// 	struct _bstnode *left;
+// 	struct _bstnode *right;
+
+// QueueNode
+// 	BSTNode *data;
+// 	struct _QueueNode *nextPtr;
+
+
+// Queue
+// 	QueueNode *head;
+// 	QueueNode *tail;
+
+
+// void levelOrderTraversal(BSTNode *node);
+
+// void insertBSTNode(BSTNode **node, int value);
+
+// BSTNode* dequeue(QueueNode **head, QueueNode **tail);
+// void enqueue(QueueNode **head, QueueNode **tail, BSTNode *node);
+// int isEmpty(QueueNode *head);
+// void removeAll(BSTNode **node);
+
+
+// case 2:
+// printf("The resulting level-order traversal of the binary search tree is: ");
+// levelOrderTraversal(root); // You need to code this function
+// printf("\n");
+// break;
+
+
 void levelOrderTraversal(BSTNode* root)
 {
+	QueueNode *new_Node = malloc(sizeof(QueueNode));
+	Queue *new_Que = malloc(sizeof(Queue));
 
-    /* add your code here */
+	new_Node->data = root;
+	new_Node->nextPtr = NULL;
+	
+	new_Que->head = new_Node;
+	new_Que->tail = new_Node;
+
+	BSTNode *cur;
+	
+	while (new_Que->head != NULL)
+	{
+		cur = dequeue(&(new_Que->head), &(new_Que->tail));
+		printf("%d ", cur->item);
+
+		if(cur->left != NULL)
+			enqueue(&(new_Que->head), &(new_Que->tail), cur->left);
+		
+		if(cur->right != NULL)
+			enqueue(&(new_Que->head), &(new_Que->tail), cur->right);
+	}
+	
+	// free(new_Node);
+	free(new_Que);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

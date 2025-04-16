@@ -102,9 +102,80 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////
+
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+// Stack
+// 	LinkedList ll;
+
+
+// int balanced(char *expression);
+
+// void push(Stack *s, int item);
+// int pop(Stack *s);
+// int peek(Stack *s);
+// int isEmptyStack(Stack *s);
+// void removeAllItemsFromStack(Stack *s);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *ll);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
 int balanced(char *expression)
 {
-/* add your code here */
+	if(expression == NULL)
+		return 1;
+
+	Stack *new_stack = malloc(sizeof(Stack));
+	new_stack->ll.head = NULL;
+	new_stack->ll.size = 0;
+	
+	char *cur = expression;
+	
+	while (*cur != '\0')
+	{
+		if (*cur == '(' || *cur == '{' || *cur == '[')
+			push(new_stack, *cur);
+		else
+		{
+			if (isEmptyStack(new_stack))
+			{
+				free(new_stack);
+				return 1;
+			}
+
+			if ((*cur == ')' && peek(new_stack) != '(')||(*cur == ']' && peek(new_stack) != '[')||(*cur == '}' && peek(new_stack) != '{'))
+			{	
+				removeAllItemsFromStack(new_stack);
+				free(new_stack);
+				return 1;
+			}
+			else
+				pop(new_stack);
+		}
+		cur++;
+	}
+	
+	if (isEmptyStack(new_stack))
+	{
+		free(new_stack);
+		return 0;
+	}
+	else
+	{	
+		removeAllItemsFromStack(new_stack);
+		free(new_stack);
+		return 1;
+	}
+
 }
 
 ////////////////////////////////////////////////////////////

@@ -95,7 +95,6 @@ void postOrderIterativeS2(BSTNode *root){
 	Stack *stack2 = malloc(sizeof(Stack));
 
 	if (stack1 == NULL || stack2 == NULL) {
-		printf("메모리 오류 - 할당 실패!\n");
 		return;
 	}
 
@@ -103,7 +102,6 @@ void postOrderIterativeS2(BSTNode *root){
 	stack2->top = NULL;
 
 	if (root == NULL) {
-		printf("트리가 비어 있음!\n");
 		return;
 	}
 

@@ -94,11 +94,51 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int maxHeight(BTNode *node)
+// BTNode
+// 	int item;
+// 	struct _btnode *left;
+// 	struct _btnode *right;
 
+// StackNode
+//     BTNode *btnode;
+//     struct _stackNode *next;
+
+// Stack
+//     StackNode *top;
+
+
+
+// int maxHeight(BTNode *node);
+
+// BTNode *createBTNode(int item);
+
+// BTNode *createTree();
+// void push( Stack *stk, BTNode *node);
+// BTNode* pop(Stack *stk);
+
+// void printTree(BTNode *node);
+// void removeAll(BTNode **node);
+
+
+
+// case 2:
+// c = maxHeight(root);
+// printf("The maximum height of the binary tree is: %d\n",c);
+// removeAll(&root);
+// break;
+
+
+int maxHeight(BTNode *node)
 {
-    /* add your code here */
+    if (node == NULL)
+        return 0;
+
+    int leftHeight = maxHeight(node->left);
+    int rightHeight = maxHeight(node->right);
+
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 

@@ -103,9 +103,45 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+
+// BTNode
+//     int item;
+//     struct _btnode *left;
+//     struct _btnode *right;
+
+// StackNode
+//     BTNode *btnode;
+//     struct _stackNode *next;
+
+// Stack
+//     StackNode *top;
+
+
+// void mirrorTree(BTNode *node);
+
+// BTNode *createBTNode(int item);
+
+// BTNode *createTree();
+// void push( Stack *stack, BTNode *node);
+// BTNode* pop(Stack *stack);
+
+// void printTree(BTNode *node);
+// void removeAll(BTNode **node);
+
+
+
 void mirrorTree(BTNode *node)
 {
-	/* add your code here */
+    if(node == NULL)
+        return;
+
+    BTNode *temp = node->left;
+    node->left = node->right;
+    node->right = temp;
+
+    mirrorTree(node->left);
+    mirrorTree(node->right);
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////

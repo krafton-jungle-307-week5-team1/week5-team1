@@ -85,10 +85,40 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RecursiveReverse(ListNode **ptrHead)
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+
+// void RecursiveReverse(ListNode **ptrHead);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *ll);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
+
+void RecursiveReverse(ListNode **head)
 {
-	/* add your code here */
+    if (*head == NULL || (*head)->next == NULL)
+        return;
+
+    ListNode *rest = (*head)->next;
+
+    RecursiveReverse(&rest);
+
+    (*head)->next->next = *head;
+    (*head)->next = NULL;
+
+    *head = rest; // 역순의 head를 갱신
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 

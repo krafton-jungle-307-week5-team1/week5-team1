@@ -38,7 +38,8 @@ int removeNode(LinkedList *ll, int index);
 
 int main()
 {
-	int c, i;
+	int c = 1; 
+	int i;
 	LinkedList ll;
 	LinkedList resultFrontList, resultBackList;
 
@@ -100,9 +101,191 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+
+// void frontBackSplitLinkedList(LinkedList* ll, LinkedList *resultFrontList, LinkedList *resultBackList);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *l);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
+
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
 {
-	/* add your code here */
+	// 1차 시도 : 자를 지점 정하고, 하나하나 노드 만들어주면서 리스트에 각자 넣어주기
+
+	// if (ll->head == NULL)
+	// 	return;
+
+	// int front_size;
+	
+	// if (ll->size%2 == 0)
+	// 	front_size = ll->size/2;
+	// else
+	// 	front_size = ll->size/2+1;
+
+	
+	// ListNode *new_Node = malloc(sizeof(ListNode));
+	
+	// new_Node->item = ll->head->item;
+	// new_Node->next = NULL;
+	
+	// resultFrontList->head = new_Node;
+	// resultFrontList->size++;
+	
+	// ListNode *cur = resultFrontList->head;
+	
+	// for (int i = 1;i<front_size;i++)
+	// {
+	// 	ListNode *new_Node = malloc(sizeof(ListNode));
+		
+	// 	new_Node->item = findNode(ll, i)->item;
+	// 	new_Node->next = NULL;
+
+	// 	cur->next = new_Node;
+	// 	cur = cur->next;
+
+	// 	resultFrontList->size++;
+	// }
+	
+	// ListNode *new_back = malloc(sizeof(ListNode));
+
+	// new_back->item = findNode(ll, front_size)->item;
+	// new_back->next = NULL;
+	
+	// resultBackList->head = new_back;
+	// resultBackList->size++;
+	
+	// cur = resultBackList->head;
+
+	// for (int i = 1; i < ll->size - front_size; i++)
+	// {
+	// 	ListNode *new_Node = malloc(sizeof(ListNode));
+		
+	// 	new_Node->item = findNode(ll, front_size + i)->item;
+	// 	new_Node->next = NULL;
+
+	// 	cur->next = new_Node;
+	// 	cur = cur->next;
+
+	// 	resultBackList->size++;
+	// }
+	
+
+	// 2차 시도 : 자를 곳 정하고, 먼저 똑같은 리스트를 만들어놓은 뒤에, 자르기
+
+	// if (ll->head == NULL)
+	// 	return;
+
+	// int front_size;
+	
+	// if (ll->size%2 == 0)
+	// 	front_size = ll->size/2;
+	// else
+	// 	front_size = ll->size/2+1;
+
+	// LinkedList *new_list = malloc(sizeof(LinkedList));
+	// ListNode *new_Node = malloc(sizeof(ListNode));
+
+	// new_list->head = new_Node;
+	// new_list->size = 1;
+
+	// new_Node->item = ll->head->item;
+	// new_Node->next = NULL;
+
+	// ListNode *cur = new_list->head;
+
+	// for (int i = 1; i < ll->size ; i++)
+	// {
+	// 	ListNode *new_Node = malloc(sizeof(ListNode));
+	// 	new_Node->item = findNode(ll, i)->item;
+	// 	new_Node->next = NULL;
+
+	// 	cur->next = new_Node;
+	// 	cur = cur->next;
+
+	// 	new_list->size++;
+	// }
+
+	// resultFrontList->head = new_list->head;
+	// cur = findNode(new_list, front_size-1);
+	// resultBackList->head = cur->next;
+	// cur->next = NULL;
+
+	// resultFrontList->size = front_size;
+	// resultBackList->size = ll->size - front_size;
+
+	// free(new_list);
+
+	// 3차 시도 : findNode는 시간복잡도에서 불리하므로, 한번 순회하면서 각각에 다 넣기.
+
+	if (ll->head == NULL)
+	return;
+
+	int front_size;
+
+	if (ll->size%2 == 0)
+		front_size = ll->size/2;
+	else
+		front_size = ll->size/2+1;
+
+	ListNode *cur;
+	ListNode *ll_cur = ll->head;
+
+	int cnt = 0;
+
+	while (ll_cur != NULL)
+	{
+		ListNode *new_Node = malloc(sizeof(ListNode));
+		new_Node->item = ll_cur->item;
+		new_Node->next = NULL;
+
+		if (cnt < front_size)
+		{
+			if (resultFrontList->head == NULL)
+			{
+				resultFrontList->head = new_Node;
+				cur = resultFrontList->head;
+			}
+			else
+			{			
+				cur->next = new_Node;
+				cur = cur->next;
+			}
+			
+			resultFrontList->size++;			
+		}
+		else
+		{
+			if (resultBackList->head == NULL)
+			{
+				resultBackList->head = new_Node;
+				cur = resultBackList->head;
+			}
+			else
+			{			
+				cur->next = new_Node;
+				cur = cur->next;
+			}
+			
+			resultBackList->size++;
+		}
+
+		ll_cur = ll_cur->next;
+		cnt++;
+	}
+	
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

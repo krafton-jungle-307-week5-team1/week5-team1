@@ -114,14 +114,135 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+// Queue
+// 	LinkedList ll;
+
+
+// void createQueueFromLinkedList(LinkedList *ll, Queue *q);
+// void removeOddValues(Queue *q);
+
+// void enqueue(Queue *q, int item);
+// int dequeue(Queue *q);
+// int isEmptyQueue(Queue *q);
+// void removeAllItemsFromQueue(Queue *q);
+
+// void printList(LinkedList *ll);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+// void removeAllItems(LinkedList *ll);
+
+
+// case 2:
+// createQueueFromLinkedList(&ll, &q); // You need to code this function
+// printf("The resulting queue is: ");
+// printList(&(q.ll));
+// break;
+// case 3:
+// removeOddValues(&q); // You need to code this function
+// printf("The resulting queue after removing odd integers is: ");
+// printList(&(q.ll));
+// removeAllItemsFromQueue(&q);
+// removeAllItems(&ll);
+// break;
+
+
 void createQueueFromLinkedList(LinkedList *ll, Queue *q)
 {
-	/* add your code here */
+	if(ll->head == NULL)
+		return;
+	
+	LinkedList *new_list = malloc(sizeof(LinkedList));
+
+	new_list->head = NULL;
+	new_list->size = 0;
+
+	for(int i = 0; i < ll->size ; i++)
+	{
+		ListNode *temp = malloc(sizeof(ListNode));
+
+		temp->item = findNode(ll, i)->item;
+		temp->next = NULL;
+
+		if(new_list->head == NULL)
+			new_list->head = temp;
+		else{
+			ListNode *j = new_list->head;
+
+			while (j->next != NULL)
+				j = j->next;
+			
+			j->next = temp;			
+		}
+
+		new_list->size++;
+
+	}
+	q->ll.head = new_list->head;
+	q->ll.size = new_list->size;
+
+	free(new_list);
 }
 
 void removeOddValues(Queue *q)
 {
-	/* add your code here */
+	if(q->ll.head == NULL)
+		return;
+	
+	LinkedList *new_list = malloc(sizeof(LinkedList));
+	LinkedList *que_list = &(q->ll);
+
+	new_list->head = NULL;
+	new_list->size = 0;
+
+	for (int i = 0; i < q->ll.size; i++)
+	{
+		int val = findNode(&(q->ll), i)->item;
+		
+		if(val%2 == 0)
+		{
+			ListNode *new_Node = malloc(sizeof(ListNode));
+			new_Node->item = val;
+			new_Node->next = NULL;
+
+			if(new_list->head == NULL)
+				new_list->head = new_Node;
+			else
+			{
+				ListNode *j = new_list->head;
+
+				while (j->next != NULL)
+					j = j->next;
+					
+				j->next = new_Node;
+			}
+
+			new_list->size++;
+		}
+	}
+	
+	for(int i = 0; i < q->ll.size-1 ;i++)
+	{
+		ListNode *j = q->ll.head;
+		q->ll.head = q->ll.head->next;
+
+		free(j);
+	}
+
+	free(q->ll.head);
+
+	q->ll.head = new_list->head;
+	q->ll.size = new_list->size;
+
+	free(new_list);
 }
 
 //////////////////////////////////////////////////////////////////////////////////

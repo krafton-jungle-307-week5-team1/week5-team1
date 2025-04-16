@@ -84,10 +84,71 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+
+// void moveEvenItemsToBack(LinkedList *ll);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *ll);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
+
 void moveEvenItemsToBack(LinkedList *ll)
 {
-	/* add your code here */
+    LinkedList *new_list = malloc(sizeof(LinkedList));
+    new_list->head = NULL;
+    new_list->size = 0;
+
+    ListNode *cur = ll->head;
+    ListNode *prev = NULL;
+
+    while (cur != NULL)
+    {
+        ListNode *next = cur->next;
+
+        if (cur->item % 2 == 0)
+        {
+            insertNode(new_list, new_list->size, cur->item);
+
+            if (prev == NULL)
+                ll->head = next;
+            else
+                prev->next = next;
+
+            free(cur);
+            ll->size--;
+        }
+        else
+            prev = cur;
+        
+        cur = next;
+    }
+
+    if (ll->head == NULL)
+        ll->head = new_list->head;
+    else
+    {
+        cur = ll->head;
+        while (cur->next != NULL)
+            cur = cur->next;
+
+        cur->next = new_list->head;
+    }
+
+    ll->size += new_list->size;
+
+    free(new_list);
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 

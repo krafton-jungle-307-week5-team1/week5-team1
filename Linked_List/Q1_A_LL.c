@@ -88,9 +88,83 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// ListNode			
+// 	 int item;
+// 	 struct _listnode *next;
+
+// LinkedList			
+// 	 int size;
+// 	 ListNode *head;
+
+
+// ///////////////////////// function prototypes ////////////////////////////////////
+
+// int insertSortedLL(LinkedList *ll, int item);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *ll);
+// ListNode *findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
+// case 1:
+// printf("Input an integer that you want to add to the linked list: ");
+// scanf("%d", &i);
+// j = insertSortedLL(&ll, i);
+// printf("The resulting linked list is: ");
+// printList(&ll);
+// break;
+
 int insertSortedLL(LinkedList *ll, int item)
 {
-	/* add your code here */
+	ListNode *cur = (ListNode*)malloc(sizeof(ListNode));
+	cur->item = item;
+	cur->next = NULL;
+
+	if(ll->head == NULL)
+	{
+		ll->head = cur;
+		ll->size++;
+
+		return 0;
+	}
+	else
+	{
+		ListNode *prev;
+		ListNode *temp;
+
+		for(int i = 0; i < ll->size ;i++)
+		{
+			temp = findNode(ll, i);
+
+			if (temp->item == item)
+				return -1;
+			else if (temp->item > item)
+			{
+				cur->item = item;
+				cur->next = temp;
+
+				if(i == 0)
+					ll->head = cur;					
+				else				
+					prev->next = cur;
+				
+				ll->size++;
+
+				return i;
+			}
+			else		// 입력된 값이 더 클때
+				prev = temp;			
+		}
+
+		findNode(ll, ll->size-1)->next = cur;
+		ll->size++;
+		return ll->size-1;
+		
+		
+	}
+
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

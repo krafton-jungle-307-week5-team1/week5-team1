@@ -66,7 +66,7 @@ int main()
 	s.ll.size = 0;
 
 	printf("1: Insert an integer into the stack:\n");
-	printf("3: Remove values until the given value;\n");
+	printf("2: Remove values until the given value;\n");
 	printf("0: Quit:\n");
 
 
@@ -109,9 +109,57 @@ int main()
 
 ////////////////////////////////////////////////////////////
 
+// ListNode
+// 	int item;
+// 	struct _listnode *next;
+
+// LinkedList
+// 	int size;
+// 	ListNode *head;
+
+// Stack
+// 	LinkedList ll;
+
+
+// void removeUntil(Stack *s, int value);
+
+// void push(Stack *s, int item);
+// int pop(Stack *s);
+// int peek(Stack *s);
+// int isEmptyStack(Stack *s);
+// void removeAllItemsFromStack(Stack *s);
+
+// void printList(LinkedList *ll);
+// void removeAllItems(LinkedList *ll);
+// ListNode * findNode(LinkedList *ll, int index);
+// int insertNode(LinkedList *ll, int index, int value);
+// int removeNode(LinkedList *ll, int index);
+
+
 void removeUntil(Stack *s, int value)
 {
-/* add your code here */
+	// ver1. 확인하고, 같지 않으면 pop
+
+	// if (s->ll.head == NULL)
+	// 	return;
+
+	// while (s->ll.size != 0)
+	// {
+	// 	int cur = peek(s);
+
+	// 	if (cur == value)
+	// 		return;
+	// 	else
+	// 		pop(s);
+	// }
+
+
+	// ver2. 같지만 좀 더 짧게
+	
+	while (!isEmptyStack(s) && peek(s) != value)
+    {
+        pop(s);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////

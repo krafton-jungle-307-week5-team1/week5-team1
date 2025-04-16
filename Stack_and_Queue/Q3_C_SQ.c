@@ -101,10 +101,167 @@ int main()
 
 /////////////////////////////////////////////////////////////////////////////////
 
+// 문제 :
+// 입력 받은 스택에 있는 값들이, 연속적이면서 쌍을 이루는 값들인지 확인하는 함수를 구현하라.
+// 조건 - 단, 함수는 push(), pop() 함수만을 이용하라.
+
+// ex) STACK : 5-4-2-1 		=> (5, 4) and (2, 1)  따라서 True
+// ex) STACK : 4-5-6-7 		=> (4, 5) and (6, 7)  따라서 True
+// ex) STACK : 6-5-4-2-1 	=> (6, 5) and (4) and (2, 1)  따라서 False
+
+
+// 문제 해결 로직
+// 1. 스택에 있는 값의 개수가 홀수거나, 아무것도 없다면? 	 	  => False (return 0)
+// 2. 스택에 있는 값을 꺼내 저장한 이후, 그 다음 값과 연속한지 비교.
+// 3. 만약 스택에서 꺼낸 수가 이전에 저장한 수와 연속하지 않는다? 	=> False (return 0)
+// 4. False를 한번도 거치지 않고 스택의 모든 값을 확인했다?	 	  => True (return 1)
+// 5. 인자로 받은 스택은 다시 그대로 보존해야 한다.
+
+
+
+
 int isStackPairwiseConsecutive(Stack *s)
 {
-  /* add your code here */
+	// ver1.
+	// 스택이 연결 리스트로 이뤄져 있으니, 새로 리스트를 만들어서 pop한 데이터를 저장.
+	// 저장된 데이터와, 새로 pop한 데이터를 비교하며 연속성 확인.
+	
+	// 1. 스택에 있는 값의 개수가 홀수거나, 아무것도 없을 때,
+	if (s->ll.head == NULL || s->ll.size % 2 != 0)
+		return 0;
+
+	// 스택에 있는 값을 꺼내, 저장할 리스트 선언 및 초기화.
+	LinkedList *new_list = malloc(sizeof(LinkedList));
+	new_list->head = NULL;
+	new_list->size = 0;
+	new_list->tail = NULL;
+		
+	// 2. 스택에 있는 값을 꺼내 저장한 이후, 그 다음 값과 연속한지 비교.
+	while (s->ll.head != NULL)
+	{
+		// 스택에서 pop을 통해 가져온 값이,
+		int temp = pop(s);
+		
+		// 만약 연결 리스트가 비어있다면, 리스트에 그냥 데이터 삽입.
+		if (new_list->size == 0)
+			insertNode(new_list, 0, temp);
+
+		// 그게 아니라면, 리스트의 끝에 pop 데이터 삽입.
+		else
+		{
+			ListNode *cur = new_list->head;
+			
+			// 리스트의 끝에 접근
+			while (cur->next != NULL)
+				cur = cur->next;
+			
+			// 일단 연속하면 모두 리스트에 넣고,
+			if (cur->item - temp == 1 || cur->item - temp == -1)
+				insertNode(new_list, new_list->size, temp);
+				
+			else {
+				// 만약 연속한 숫자의 개수가 짝수개라면, 계속 리스트에 넣고,
+				if (new_list->size % 2 == 0)
+					insertNode(new_list, new_list->size, temp);
+					
+				// 3. 만약 스택에서 꺼낸 수가 이전에 저장한 수와 연속하지 않는다? 	=> False (return 0)
+				else
+				{
+					// 스택을 동적 할당했기 때문에, 모두 메모리 해제 후 False
+					removeAllItems(new_list);
+					free(new_list);					
+					return 0;
+				}				
+			}
+		}
+	}
+	
+	// False를 한번도 거치지 않고 스택의 모든 값을 확인했는데, 홀수개라면, False. 짝수면 True.
+	int res = new_list->size % 2;
+
+	removeAllItems(new_list);
+	free(new_list);
+
+	if (res)
+		return 0;
+	else
+		return 1;
+
+
+	// 트러블 슈팅
+	// - 문제에서 push, pop을 이용하라 했지만, push는 사용하지 않음.
+	// - 즉, 스택을 활용한 문제였지만, 연결 리스트로 접근하여 해결.
+	// - 함수가 끝났을 때 리스트 데이터가 살아있을 필요성이 없는데, malloc을 사용.
+	// - 주어진 스택의 보존이 되지 않음.
+	// - 주어진 스택이 짝수일 때만 계산해야 한다는 점을 이용해 좀 더 효율적으로 접근할 수 있음.
+	// - 한 쌍씩 연속하면 된다는 점을 이용해, 스택에서 값을 두개씩 꺼내 비교하면 효율적임.
+
+
+	// 따라서 문제 해결 로직을 부분적으로 수정. - 2, 3번.
+	
+	// 문제 해결 로직
+	// 1. 스택에 있는 값의 개수가 홀수거나, 아무것도 없다면? 	 => False (return 0)
+	// 2. 스택에 있는 값을 꺼낼 때, 하나씩 확인하기 보단, 둘 씩 꺼내서 연속하는지 체크
+	// 3. 만약 스택에서 꺼낸 수 둘이 연속하지 않는다? 		    => False (return 0)
+	// 4. False를 한번도 거치지 않고 스택의 모든 값을 확인했다?	 => True (return 1)
+	// 5. 인자로 받은 스택은 다시 그대로 보존해야 한다.
+
+	// ver2. 
+	// 리스트말고, 스택과 push, pop을 활용하여 접근.
+	
+	// 1. 스택에 있는 값의 개수가 홀수거나, 아무것도 없다면? 	 => False (return 0)
+    if (s->ll.head == NULL || s->ll.size % 2 != 0)
+        return 0;
+
+	// 스택에 있는 값을 꺼낼 때(pop),
+	// 원래 스택으로 복원하기 위해 pop한 데이터를 임시 스택에 저장
+    Stack tempStack;
+    tempStack.ll.head = NULL;
+    tempStack.ll.size = 0;
+
+	// 연속한 한 쌍이 유지되고 있는지를 판별하기 위한 변수.
+    int pairwise = 1;
+
+	// 2. 스택에 있는 값을 꺼낼 때, 하나씩 확인하기 보단, 둘 씩 꺼내서 연속하는지 체크
+    while (!isEmptyStack(s))
+    {
+		// 스택에서 한번에 두개의 값을 꺼내어 비교.
+        int first = pop(s);
+        int second = pop(s);
+		
+		// 원래 입력된 스택의 복원을 위해 임시 스택에 다시 push.
+		push(&tempStack, first);
+		push(&tempStack, second);
+
+		// 꺼낸 두개의 값이 연속하지 않다면,
+        if (abs(first - second) != 1)
+        {
+			// 3. 만약 스택에서 꺼낸 수 둘이 연속하지 않는다? => False (return 0)
+			pairwise = 0;
+
+			// 연속하면서, 한쌍이 아닌 스택이라는걸 알았으면 그만 탐색해도 됨.
+			break;
+		}    
+
+    }
+	// 4. False를 한번도 거치지 않고 스택의 모든 값을 확인했다?	 => True (return 1)
+
+    
+	// 5. 인자로 받은 스택은 다시 그대로 보존해야 한다.
+    while (!isEmptyStack(&tempStack))
+    {
+        push(s, pop(&tempStack));
+    }
+
+    return pairwise;
+	
 }
+
+// 결론
+// 두가지 방법을 비교했을 때,
+// - ver1. 은 삽입할 때마다, 리스트에 가장 마지막 값과 비교하기 때문에, 리스트를 전체 순회하여 N^2의 시간 복잡도를 가짐.
+// - ver2. 는 스택을 한번만 순회하면 되기 때문에, N의 시간 복잡도를 가짐.
+
 
 //////////////////////////////////////////////////////////////////////////////////
 

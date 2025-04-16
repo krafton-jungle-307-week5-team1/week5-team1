@@ -101,9 +101,66 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+
+// ListNode
+//   int item;
+// 	 struct _listnode *next;
+
+
+// LinkedList	
+//   int size;
+// 	 ListNode *head;
+
+
+// void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2);
+
+// void printList(LinkedList *ll);
+
+// void removeAllItems(LinkedList *ll);
+
+// ListNode *findNode(LinkedList *ll, int index);
+
+// int insertNode(LinkedList *ll, int index, int value);
+
+// int removeNode(LinkedList *ll, int index);
+
+// case 3:
+// printf("The resulting linked lists after merging the given linked list are:\n");
+// alternateMergeLinkedList(&ll1, &ll2); // You need to code this function
+// printf("The resulting linked list 1: ");
+// printList(&ll1);
+// printf("The resulting linked list 2: ");
+// printList(&ll2);
+// removeAllItems(&ll1);
+// removeAllItems(&ll2);
+
+
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
-    /* add your code here */
+	if (ll1 == NULL || ll2 == NULL || ll2->head == NULL)
+		return;
+
+	ListNode *cur1 = ll1->head;
+	ListNode *cur2 = ll2->head;
+	ListNode *next1 = NULL;
+	ListNode *next2 = NULL;
+
+	int index = 1;
+
+	while (cur1 != NULL && cur2 !=NULL)
+	{
+		next1 = cur1->next;
+		next2 = cur2->next;
+
+		insertNode(ll1, index, cur2->item);
+		ll2->head = next2;
+		free(cur2);
+		ll2->size--;
+
+		cur1 = findNode(ll1, index+1);
+		index += 2;
+		cur2 = next2;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

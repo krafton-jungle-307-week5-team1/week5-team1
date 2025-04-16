@@ -89,9 +89,51 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+
+// BSTNode
+// 	int item;
+// 	struct _bstnode *left;
+// 	struct _bstnode *right;
+
+// StackNode
+// 	BSTNode *data;
+// 	struct _stackNode *next;
+
+// Stack
+// 	StackNode *top;
+
+
+// void preOrderIterative(BSTNode *root);
+
+// void insertBSTNode(BSTNode **node, int value);
+
+// void push(Stack *stack, BSTNode *node);
+// BSTNode *pop(Stack *s);
+// BSTNode *peek(Stack *s);
+// int isEmpty(Stack *s);
+// void removeAll(BSTNode **node);
+
 void preOrderIterative(BSTNode *root)
 {
-	 /* add your code here */
+	Stack s;
+	s.top = NULL;
+
+	BSTNode *cur = root;
+	push(&s, cur);
+
+	while (cur != NULL || s.top != NULL)
+	{
+		cur = pop(&s);
+
+		if (cur == NULL)
+			continue;
+
+		printf("%d ", cur->item);
+
+		push(&s, cur->right);
+		push(&s, cur->left);
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

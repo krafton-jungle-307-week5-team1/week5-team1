@@ -79,6 +79,7 @@ int main()
             case 2:
                 printf("\nThe values stored in all nodes of the tree that has at least one great-grandchild are: ");
                 hasGreatGrandchild(root);
+                printf("\n");
                 removeAll(&root);
                 break;
             case 0:
@@ -100,9 +101,47 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// BTNode
+//     int item;
+//     struct _btnode *left;
+//     struct _btnode *right;
+
+// StackNode
+//     BTNode *btnode;
+//     struct _stackNode *next;
+
+// Stack
+//     StackNode *top;
+
+
+// int hasGreatGrandchild(BTNode *node);
+
+// BTNode *createBTNode(int item);
+
+// BTNode *createTree();
+// void push( Stack *stack, BTNode *node);
+// BTNode* pop(Stack *stack);
+
+// void printTree(BTNode *node);
+// void removeAll(BTNode **node);
+
+
 int hasGreatGrandchild(BTNode *node)
 {
-	/* add your code here */
+    if (node == NULL)
+        return -1; // NULL 노드는 depth -1로 처리 (leaf는 0이 되게끔)
+
+    int leftDepth = hasGreatGrandchild(node->left);
+    int rightDepth = hasGreatGrandchild(node->right);
+
+    int maxDepth = (leftDepth > rightDepth) ? leftDepth : rightDepth;
+
+    maxDepth++;
+
+    if (maxDepth >= 3)
+        printf("%d ", node->item);
+
+    return maxDepth; // 현재 노드까지 포함한 depth 리턴
 }
 
 //////////////////////////////////////////////////////////////////////////////////
