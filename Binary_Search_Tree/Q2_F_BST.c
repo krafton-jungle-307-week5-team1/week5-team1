@@ -8,6 +8,10 @@ Purpose: Implementing the required functions for Question 2 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define MAX_INPUT_SIZE 1<<20 // 1MB
+#define BUFFER_SIZE 1024
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -31,9 +35,7 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 void inOrderTraversal(BSTNode *node);
-
 void insertBSTNode(BSTNode **node, int value);
-
 void push(Stack *stack, BSTNode *node);
 BSTNode *pop(Stack *s);
 BSTNode *peek(Stack *s);
@@ -41,6 +43,31 @@ int isEmpty(Stack *s);
 void removeAll(BSTNode **node);
 
 ///////////////////////////// main() /////////////////////////////////////////////
+
+int main_modified(){
+    BSTNode *root = NULL;
+    char inputLine[MAX_INPUT_SIZE];
+	int max_input_numbers = sizeof(inputLine) / sizeof(inputLine[0]);
+
+    printf("정수를 공백으로 구분하여 입력하세요: \n");
+
+    if (fgets(inputLine, sizeof(inputLine), stdin) != NULL) {
+        char *token = strtok(inputLine, " \n"); // strtok로 구분자 처리 ==> delim에 포함된 아무 문자라도 만나면 분리함.
+        while (token != NULL) {
+            int i = atoi(token);
+            insertBSTNode(&root, i);
+            token = strtok(NULL, " \n");
+        }
+    }
+    
+    printf("Binary Search Tree의 in-order traversal 결과: ");
+    inOrderTraversal(root);
+    printf("\n");
+    
+    removeAll(&root);
+    
+    return 0;
+}
 
 int main()
 {
@@ -87,71 +114,47 @@ int main()
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+// 반복 버전
+void inOrderTraversal(BSTNode *root){
+	/* 문제: Write an iterative C function inOrderTraversal() that prints the in-
+		order traversal of a binary search tree, using a stack.
+		Note that you should only use push() or pop() operations when you add 
+		or remove integers from the stack. 
+		Remember to empty the stack at the end of the function.
+	*/
+	Stack stk;
+	stk.top = NULL; // 초기화는 항상 필수!
 
-// BSTNode
-// 	int item;
-// 	struct _bstnode *left;
-// 	struct _bstnode *right;
+    BSTNode* curr = root; // 탐색용 노드
 
-// StackNode
-// 	BSTNode *data;
-// 	struct _stackNode *next;
+    while (curr != NULL || !isEmpty(&stk)) {
+        while (curr != NULL) {
+            push(&stk, curr);
+            curr = curr->left;
+        }
 
-// Stack
-// 	StackNode *top;
+        curr = pop(&stk);
+        printf("%d\n", curr->item);
+        curr = curr->right;
+    }
+}
 
-
-// void inOrderTraversal(BSTNode *node);
-
-// void insertBSTNode(BSTNode **node, int value);
-
-// void push(Stack *stack, BSTNode *node);
-// BSTNode *pop(Stack *s);
-// BSTNode *peek(Stack *s);
-// int isEmpty(Stack *s);
-// void removeAll(BSTNode **node);
-
-
-void inOrderTraversal(BSTNode *root)
-{
-
-	// ver1. not use Stack
-
-	// if (root == NULL)
-	// 	return;
-
-	// inOrderTraversal(root->left);
-	// printf("%d ", root->item);
-	// inOrderTraversal(root->right);
-
-
-	// ver2. use Stack
-
-	Stack s;
-	s.top = NULL;
-
-	BSTNode *cur = root;
-	
-	while (cur != NULL || s.top != NULL)
-	{
-		while (cur != NULL)
-		{
-			push(&s, cur);
-			cur = cur->left;
-		}
-	
-		cur = pop(&s);
-		printf("%d ", cur->item);
-	
-		cur = cur->right;
+// 재귀 버전
+void inOrderTraversal_rcsv(BSTNode *root){
+	if (root == NULL) // root라는 포인터 변수가 아무것도 가리키고 있지 않은가? (즉, 저장된 주소값이 NULL인가?)
+		return;
+	else{
+		inOrderTraversal(root->left);
+		printf("%d ", root->item);
+		inOrderTraversal(root->right);
 	}
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void insertBSTNode(BSTNode **node, int value){
-	if (*node == NULL)
-	{
+	if (*node == NULL){
 		*node = malloc(sizeof(BSTNode));
 
 		if (*node != NULL) {
@@ -159,15 +162,10 @@ void insertBSTNode(BSTNode **node, int value){
 			(*node)->left = NULL;
 			(*node)->right = NULL;
 		}
-	}
-	else
-	{
-		if (value < (*node)->item)
-		{
+	}else{
+		if (value < (*node)->item){
 			insertBSTNode(&((*node)->left), value);
-		}
-		else if (value >(*node)->item)
-		{
+		}else if (value > (*node)->item){
 			insertBSTNode(&((*node)->right), value);
 		}
 		else
@@ -180,7 +178,7 @@ void insertBSTNode(BSTNode **node, int value){
 void push(Stack *stack, BSTNode * node)
 {
 	StackNode *temp;
-
+	printf("PUSHED_%d_TO_%p\n", node->item, stack);
 	temp = malloc(sizeof(StackNode));
 
 	if (temp == NULL)
@@ -215,6 +213,8 @@ BSTNode * pop(Stack * s)
 		free(t);
 		t = NULL;
 	}
+
+	printf("POPPED_%d_FROM_%p\n", ptr->item , s);
 
 	return ptr;
 }

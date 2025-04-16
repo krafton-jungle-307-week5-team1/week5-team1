@@ -113,64 +113,16 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// BTNode
-// 	int item;
-// 	struct _btnode *left;
-// 	struct _btnode *right;
-
-// StackNode
-//     BTNode *btnode;
-//     struct _stackNode *next;
-
-// Stack
-//     StackNode *top;
-
-
-// int identical(BTNode *tree1, BTNode *tree2);
-
-// BTNode* createBTNode(int item);
-
-// BTNode* createTree();
-// void push( Stack *stk, BTNode *node);
-// BTNode* pop(Stack *stk);
-
-// void printTree(BTNode *node);
-// void removeAll(BTNode **node);
-
-
-// case 3:
-// s = identical(root1, root2);
-// if(s){
-// printf("Both trees are structurally identical.\n");
-// }
-// else{
-// printf("Both trees are different.\n");
-// }
-// removeAll(&root1);
-// removeAll(&root2);
-// break;
-
-
-
-int identical(BTNode *tree1, BTNode *tree2)
-{
-    // 둘 다 NULL이면 동일한 구조
-    if (tree1 == NULL && tree2 == NULL)
+int identical(BTNode *tree1, BTNode *tree2){ // 같으면 return 1, 이외에는 전부 return 0
+    if (tree1==NULL && tree2==NULL)
         return 1;
-
-    // 둘 중 하나만 NULL이면 다름
-    if (tree1 == NULL || tree2 == NULL)
+    if (tree1==NULL || tree2==NULL)
         return 0;
-
-    // 현재 노드의 값이 다르면 다름
-    if (tree1->item != tree2->item)
+    if (!(tree1->item == tree2->item) )
         return 0;
-
-    // 왼쪽과 오른쪽 모두 재귀적으로 확인
-    return identical(tree1->left, tree2->left) &&
-            identical(tree1->right, tree2->right);
+    
+    return identical(tree1->left,tree2->left) && identical(tree1->right,tree2->right);
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////
 

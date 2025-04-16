@@ -107,41 +107,24 @@ int main()
 
 ////////////////////////////////////////////////////////////
 
-// ListNode
-// 	int item;
-// 	struct _listnode *next;
+/* 5. (recursiveReverseQueue) Write a recursive C function recursiveReverseQueue()
+	that reverses the order of items stored in a queue of integers.
 
-// LinkedList
-// 	int size;
-// 	ListNode *head;
+	The function prototype is given as follows:
+	void recursiveReverseQueue(Queue *q);
 
-// Queue
-// 	LinkedList ll;
+	For example, if the queue is (1, 2, 3, 4, 5), then the resulting queue will be (5, 4, 3, 2, 1).
+*/
 
-
-// void recursiveReverse(Queue *q);
-
-// // You may use the following functions or you may write your own
-// void enqueue(Queue *q, int item);
-// int dequeue(Queue *q);
-// int isEmptyQueue(Queue *q);
-// void removeAllItemsFromQueue(Queue *q);
-
-// void printList(LinkedList *ll);
-// void removeAllItems(LinkedList *ll);
-// ListNode * findNode(LinkedList *ll, int index);
-// int insertNode(LinkedList *ll, int index, int value);
-// int removeNode(LinkedList *ll, int index);
-
-
-void recursiveReverse(Queue *q)
-{
-	if (q->ll.head == NULL)
+void recursiveReverse(Queue *q){
+	int item;
+	
+	if (q == NULL || isEmptyQueue(q))
 		return;
 
-	int temp = dequeue(q);
-	recursiveReverse(q);
-	enqueue(q, temp);
+	item = dequeue(q);
+	recursiveReverse(q); 
+	enqueue(q, item);
 }
 
 //////////////////////////////////////////////////////////////////

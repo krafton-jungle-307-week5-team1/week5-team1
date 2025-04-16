@@ -37,15 +37,13 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
-int main()
-{
+int main(){
 	LinkedList ll;
 	int c, i, j;
 	c = 1;
 	//Initialize the linked list 1 as an empty linked list
 	ll.head = NULL;
 	ll.size = 0;
-
 
 	printf("1: Insert an integer to the linked list:\n");
 	printf("2: Move all odd integers to the back of the linked list:\n");
@@ -84,114 +82,56 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// typedef struct _listnode
-// {
-// 	int item;
-// 	struct _listnode *next;
-// } ListNode;			// You should not change the definition of ListNode
-
-// typedef struct _linkedlist
-// {
-// 	int size;
-// 	ListNode *head;
-// } LinkedList;			// You should not change the definition of LinkedList
-
-
-// void moveOddItemsToBack(LinkedList *ll);
-
-// void printList(LinkedList *ll);
-// void removeAllItems(LinkedList *ll);
-// ListNode * findNode(LinkedList *ll, int index);
-// int insertNode(LinkedList *ll, int index, int value);
-// int removeNode(LinkedList *ll, int index);
-
-
-// case 2:
-// moveOddItemsToBack(&ll); // You need to code this function
-// printf("The resulting linked list after moving odd integers to the back of the linked list is: ");
-// printList(&ll);
-// removeAllItems(&ll);
-// break;
-
-void moveOddItemsToBack(LinkedList *ll)
-{
-	if(ll->head == NULL)
+void moveOddItemsToBack(LinkedList *ll){
+    // 0. 리스트가 비어있는 경우 그냥 리턴
+    if (ll == NULL || ll->head == NULL)
 		return;
-
-	LinkedList *even = malloc(sizeof(LinkedList));
-	LinkedList *odd = malloc(sizeof(LinkedList));
 	
-	even->head = NULL;
-	even->size = 0;
-	odd->head = NULL;
-	odd->size = 0;
+	// 1. 현재 LL의 마지막 노드를 찾아 저장 - 이때, 원래 tail 위치는 oldTail로 따로 저장해둠
+	ListNode *oldTail = ll->head;
+	while (oldTail->next != NULL) {
+		oldTail = oldTail->next;
+	}
+	ListNode *tail = oldTail;
 
-	for(int i = 0; i<ll->size;i++)
-	{
-		ListNode *temp = findNode(ll,i);
+	// 2. 순회용 *cur를 head로 초기화, 이전 노드를 가리키는 *prev는 NULL로 초기화
+	ListNode *cur = ll -> head;
+	ListNode *prev = NULL;
 
-		ListNode *new_Node = malloc(sizeof(ListNode));
+	// 3. 반복 - cur가 oldTail->next가 될 때까지
+	while (cur != oldTail->next){
 
-		new_Node->item = temp->item;
-		new_Node->next = NULL;
+	// 4. cur->item이 홀수인지 체크
+		// 4.1. 홀수면?
+		if (cur->item % 2 == 1){
+			// 4.1.1. cur 노드를 리스트에서 분리
+			ListNode *nextNode = cur->next;
 
-		if (temp->item % 2 == 0)
-		{
-			if(even->head == NULL)
-				even->head = new_Node;
+			// - prev가 NULL이면, cur == head이므로, head를 cur->next로 갱신
+			// - prev가 NULL이 아니면 prev->next를 cur->next로 갱신
+			if (prev == NULL)
+				ll->head = nextNode;
 			else
-			{
-				ListNode *j = even->head;
-				while (j->next != NULL)
-					j = j->next;
-				
-				j->next = new_Node;
-			}
-			
-			even->size++;
-		}
-		else{		// 홀수일 때,
-			if(odd->head == NULL)
-				odd->head = new_Node;
-			else
-			{
-				ListNode *j = odd->head;
-				while (j->next != NULL)
-					j = j->next;
-				
-				j->next = new_Node;
-			}
+				prev->next = nextNode;
 
-			odd->size++;
+			// 4.1.2. cur 노드를 tail 뒤에 붙이고, cur->next는 NULL로 설정
+			tail->next = cur;
+			cur->next = NULL;
+
+			// 4.1.3. tail 포인터를 cur로 갱신
+			tail = cur;
+
+			// 4.1.4. cur을 다음 노드(nextNode)로 이동시키되, prev는 유지
+			cur = nextNode;
+
+		}else{
+		// 4.2. 짝수면?
+		// a. prev를 cur로 갱신
+		// b. cur을 다음 노드로 이동
+			prev = cur;
+			cur = cur->next;
 		}
 	}
-
-	if(even->head == NULL)
-		return;
-	else if(odd->head == NULL)
-		return;
-	
-	ListNode *last_even = findNode(even,even->size-1);
-	ListNode *first_odd = findNode(odd, 0);
-	
-	last_even->next = first_odd;
-	even->size += odd->size;
-
-	for(int x = 0; x<ll->size-1; x++)
-	{
-		ListNode *y = ll->head;
-		ll->head = ll->head->next;
-
-		free(y);
-	}
-	free(ll->head);
-
-	ll->head = even->head;
-	ll->size = even->size;
-
-	free(even);
-	free(odd);
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

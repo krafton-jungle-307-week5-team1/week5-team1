@@ -100,61 +100,34 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// StackNode
-//     BTNode *btnode;
-//     struct _stackNode *next;
+int sumOfOddNodes(BTNode *node){
+    /*
+        Write a recursive C function sumOfOddNodes() 
+        that accepts a pointer to the root node of a binary tree of integers 
+        and return the sum of all odd numbers in the tree.
+    */
 
-// Stack
-//     StackNode *top;
+    int currNode;
 
-
-// int sumOfOddNodes(BTNode *root);
-
-// BTNode *createBTNode(int item);
-
-// BTNode *createTree();
-// void push( Stack *stack, BTNode *node);
-// BTNode* pop(Stack *stack);
-
-// void printTree(BTNode *node);
-// void removeAll(BTNode **node);
-
-// case 2:
-//  oddValueCount = sumOfOddNodes(root);
-//  printf("The sum of all odd numbers in the binary tree is: %d.\n",oddValueCount);
-//  removeAll(&root);
-//  break;
-
-static int num = 0;
-
-int sumOfOddNodes(BTNode *node)
-{
-    // ver1. Static 변수 이용.
-    // if (node == NULL)
-    //     return 0;
-
-    // if (node->item%2 != 0)
-    //     num += node->item;
-
-    // if (node->left != NULL)
-    //     sumOfOddNodes(node->left);
-    // if (node->right != NULL)
-    //     sumOfOddNodes(node->right);
-
-    // return num;
-
-    
-    // ver2. return 재귀 이용.
-    if (node == NULL)
+    if (node==NULL) // 아예 node가 x
         return 0;
 
-    if (node->item%2 != 0)
-        return node->item + sumOfOddNodes(node->left) + sumOfOddNodes(node->right);
-    else
-        return sumOfOddNodes(node->left) + sumOfOddNodes(node->right);
+    currNode = (node->item % 2 != 0) ? node->item : 0;
+
+    if (node->left == NULL) {
+        if (node->right != NULL) // 좌 x, 우 o
+            return currNode + sumOfOddNodes(node->right);
+        else // 좌 x, 우 x
+            return currNode;
+    } else if (node->right == NULL) {
+        if (node->left != NULL)// 좌 o, 우 x
+            return sumOfOddNodes(node->left) + currNode;
+        else // 좌 x, 우 x
+            return currNode;
+    }else{ // 좌 o, 우 o
+        return currNode + sumOfOddNodes(node->left) + sumOfOddNodes(node->right);
+    }
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////////////
 

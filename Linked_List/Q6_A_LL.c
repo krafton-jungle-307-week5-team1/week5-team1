@@ -11,14 +11,12 @@ Purpose: Implementing the required functions for Question 6 */
 
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct _listnode
-{
+typedef struct _listnode{
 	int item;
 	struct _listnode *next;
 } ListNode;			// You should not change the definition of ListNode
 
-typedef struct _linkedlist
-{
+typedef struct _linkedlist{
 	int size;
 	ListNode *head;
 } LinkedList;			// You should not change the definition of LinkedList
@@ -28,6 +26,7 @@ typedef struct _linkedlist
 
 // You should not change the prototype of this function
 int moveMaxToFront(ListNode **ptrHead);
+int moveMaxToFrontReadOnly(ListNode *ptrHead);
 
 void printList(LinkedList *ll);
 void removeAllItems(LinkedList *ll);
@@ -38,8 +37,7 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
-int main()
-{
+int main(){
 	int c, i, j;
 	c = 1;
 
@@ -68,7 +66,8 @@ int main()
 			printList(&ll);
 			break;
 		case 2:
-			moveMaxToFront(&(ll.head));  // You need to code this function
+			// moveMaxToFront(&(ll.head));  // You need to code this function
+			moveMaxToFrontReadOnly(ll.head);
 			printf("The resulting linked list after moving largest stored value to the front of the list is: ");
 			printList(&ll);
 			removeAllItems(&ll);
@@ -85,111 +84,93 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////////////////
-
-
-// ListNode
-// 	int item;
-// 	struct _listnode *next;
-
-// LinkedList
-// 	int size;
-// 	ListNode *head;
-
-
-// int moveMaxToFront(ListNode **ptrHead);
-
-// void printList(LinkedList *ll);
-// void removeAllItems(LinkedList *ll);
-// ListNode * findNode(LinkedList *ll, int index);
-// int insertNode(LinkedList *ll, int index, int value);
-// int removeNode(LinkedList *ll, int index);
-
-
-// int moveMaxToFront(ListNode **ptrHead)
-// {
-// 	LinkedList *new_list = malloc(sizeof(LinkedList));
-// 	ListNode *new_Node = malloc(sizeof(ListNode));
-
-// 	new_Node->item = (*ptrHead)->item;
-// 	new_Node->next = NULL;
-
-// 	new_list->head = new_Node;
-// 	new_list->size = 1;
-
-// 	ListNode *list_cur = new_list->head;
-// 	ListNode *cur = (*ptrHead)->next;
-// 	ListNode *prev = (*ptrHead)->next;
-
-// 	while (prev->next != NULL)
-// 	{
-// 		cur = *ptrHead;
-
-// 		prev = cur;
-// 		cur = cur->next;
-// 		prev->next = cur->next;
-
-// 		if (cur->item > new_list->head->item)
-// 		{
-// 			cur->next = new_list->head;
-// 			new_list->head = cur;
-// 		}
-// 		else
-// 		{
-// 			while (list_cur->next != NULL && cur->item < list_cur->next->item)
-// 				list_cur = list_cur->next;
-
-// 			cur->next = list_cur->next;	
-// 			list_cur->next = cur;
-				
-// 		}
-
-// 		new_list->size++;
-// 		list_cur = new_list->head;
-		
-// 	}
-	
-// 	*ptrHead = &(*new_list->head);
-
-
-// 	free(new_list);
-
-// 	return 0;
-
-// }
-
-int moveMaxToFront(ListNode **ptrHead)
-{
-	if (*ptrHead == NULL || (*ptrHead)->next == NULL)
+int moveMaxToFront(ListNode **ptrHead){
+	// 1. 이동할 필요가 없는 경우들은 return 0
+	if (*ptrHead == NULL || (*ptrHead)->next == NULL) 
 		return 0;
 
-	ListNode *newHead = NULL;
-	ListNode *cur = *ptrHead;
+	// 2. 포인터 세팅
+    // 2.1. 최대값 노드를 가리키기 위한 maxNode
+	ListNode *maxNode = *ptrHead;
+    // 2.2. 이전 노드를 추적하기 위한 maxPrev
+	ListNode *maxPrev = NULL;
+    // 2.3. 순회용 포인터 curr
+	ListNode *curr = *ptrHead;
+	// 2.4. 이전 노드를 가리키는 포인터 prev
+	ListNode *prev = NULL;
 
-	while (cur != NULL) {
-		ListNode *next = cur->next;
-
-		if (newHead == NULL || cur->item > newHead->item) {
-			cur->next = newHead;
-			newHead = cur;
-		} 
-		else
-		{
-			ListNode *temp = newHead;
-			while (temp->next != NULL && temp->next->item > cur->item)
-				temp = temp->next;
-			
-			cur->next = temp->next;
-			temp->next = cur;
+    // 3. 반복 - cur가 NULL이 아닌 동안
+	while (curr != NULL) {
+		// 3.1. cur->item이 현재 maxNode->item보다 크다?
+		if (curr->item > maxNode->item) {
+			// maxNode를 cur로 갱신 & maxPrev를 prev로 갱신
+			maxNode = curr;
+			maxPrev = prev;
 		}
-		cur = next;
+		// 3.2. prev를 cur로 이동 & cur를 cur->next로 이동
+		prev = curr;
+		curr = curr->next;
 	}
 
-	*ptrHead = newHead;
-
-	return 1;
+    // 4. 최대값이 이미 맨 앞이면 (maxPrev == NULL)? 이동 없이 return 0
+	if (maxPrev == NULL) {
+		return 0;
+	}else{
+    // 5. 그렇지 않다면?
+		// 5.1. maxPrev->next를 maxNode->next로 설정하여 maxNode를 리스트에서 분리
+		maxPrev->next = maxNode->next;
+		// 5.2. maxNode->next를 *ptrHead로 설정하여 maxNode를 리스트의 앞에 붙임
+		maxNode->next = *ptrHead;
+		// 5.3. *ptrHead를 maxNode로 갱신
+		*ptrHead = maxNode;
+	}
+	
+	return 0;
 }
 
+int moveMaxToFrontReadOnly(ListNode *ptrHead){
+	// 1. 이동할 필요가 없는 경우들은 return 0
+	if (ptrHead == NULL || ptrHead->next == NULL) 
+		return 0;
 
+	// 2. 포인터 세팅
+    // 2.1. 최대값 노드를 가리키기 위한 maxNode
+	ListNode *maxNode = ptrHead;
+    // 2.2. 이전 노드를 추적하기 위한 maxPrev
+	ListNode *maxPrev = NULL;
+    // 2.3. 순회용 포인터 curr
+	ListNode *curr = ptrHead;
+	// 2.4. 이전 노드를 가리키는 포인터 prev
+	ListNode *prev = NULL;
+
+    // 3. 반복 - cur가 NULL이 아닌 동안
+	while (curr != NULL) {
+		// 3.1. cur->item이 현재 maxNode->item보다 크다?
+		if (curr->item > maxNode->item) {
+			// maxNode를 cur로 갱신 & maxPrev를 prev로 갱신
+			maxNode = curr;
+			maxPrev = prev;
+		}
+		// 3.2. prev를 cur로 이동 & cur를 cur->next로 이동
+		prev = curr;
+		curr = curr->next;
+	}
+
+    // 4. 최대값이 이미 맨 앞이면 (maxPrev == NULL)? 이동 없이 return 0
+	if (maxPrev == NULL) {
+		return 0;
+	}else{
+    // 5. 그렇지 않다면?
+		// 5.1. maxPrev->next를 maxNode->next로 설정하여 maxNode를 리스트에서 분리
+		maxPrev->next = maxNode->next;
+		// 5.2. maxNode->next를 *ptrHead로 설정하여 maxNode를 리스트의 앞에 붙임
+		maxNode->next = ptrHead;
+		// 5.3. *ptrHead를 maxNode로 갱신
+		ptrHead = maxNode;
+	}
+	
+	return 0;
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 

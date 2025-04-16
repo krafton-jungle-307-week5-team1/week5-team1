@@ -100,51 +100,28 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// BTNode
-//     int item;
-//     struct _btnode *left;
-//     struct _btnode *right;
+int smallestValue(BTNode *node){
+    /* DFS 반복형으로 풀어보자. 
+        트리는 순환 x => visited 체크 필요 x.
+    */
 
-// StackNode
-//     BTNode *btnode;
-//     struct _stackNode *next;
+    int minVal = node->item; // 기본으로 int의 최댓값을 넣음
+    Stack stk;
+    push(&stk, node);
 
-// Stack
-//     StackNode *top;
+    while (stk.top != NULL){
+        BTNode* curr = pop(&stk);
+        
+        if (curr->item < minVal)
+            minVal = curr->item; // 최솟값 담기
 
+        // 아래 두 개는 다음으로 가는 부분
+        if (curr->right != NULL)
+            push(&stk, curr->right);
 
-// int smallestValue(BTNode *node);
-
-// BTNode *createBTNode(int item);
-
-// BTNode *createTree();
-// void push( Stack *stack, BTNode *node);
-// BTNode* pop(Stack *stack);
-
-// void printTree(BTNode *node);
-// void removeAll(BTNode **node);
-
-// case 2:
-// value = smallestValue(root);
-// printf("Smallest value of the binary tree is: %d\n",value);
-// removeAll(&root);
-// break;
-
-
-int smallestValue(BTNode *node)
-{
-    static int minimum = 1<<30;
-
-    if (node == NULL)
-        return 0;
-
-    if (node->item < minimum)
-        minimum = node->item;
-    
-    smallestValue(node->left);
-    smallestValue(node->right);
-
-    return minimum;
+        if (curr->left != NULL)
+            push(&stk, curr->left);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -111,123 +111,63 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// ListNode
-// 	int item;
-// 	struct _listnode *next;
+/*
+2. (createStackFromLinkedList) Write a C function createStackFromLinkedList()
+	to create a stack (linked-list-based) by pushing all integers that are storing in the linked list.
+	The first node of the linked list is pushed first, and then the second node, and so on.
+	Remember to empty the stack at the beginning, if the stack is not empty.
 
-// LinkedList
-// 	int size;
-// 	ListNode *head;
+	The function prototypes are given as follows:
+	void createStackFromLinkedList(LinkedList *ll , Stack *stack);
 
-// Stack
-// 	LinkedList ll;
+	A sample input and output session is given below (if the current linked list is 1, 3, 5, 6, 7):
+	The resulting linked list is: 1 3 5 6 7
+	Please input your choice(1/2/3/0): 2
+	The resulting stack is: 7 6 5 3 1
+*/
 
+void createStackFromLinkedList(LinkedList *ll, Stack *s){	
+	ListNode * curr;
 
-// void createStackFromLinkedList(LinkedList *ll , Stack *stack);
-// void removeEvenValues(Stack *s);
-
-// void push(Stack *s , int item);
-// int pop(Stack *s);
-// int isEmptyStack(Stack *s);
-// void removeAllItemsFromStack(Stack *s);
-
-// void printList(LinkedList *ll);
-// ListNode * findNode(LinkedList *ll, int index);
-// int insertNode(LinkedList *ll, int index, int value);
-// int removeNode(LinkedList *ll, int index);
-// void removeAllItems(LinkedList *ll);
-
-// case 2:
-// createStackFromLinkedList(&ll, &s); // You need to code this function
-// printf("The resulting stack is: ");
-// printList(&(s.ll));
-// break;
-// case 3:
-// removeEvenValues(&s); // You need to code this function
-// printf("The resulting stack after removing even integers is: ");
-// printList(&(s.ll));
-// removeAllItemsFromStack(&s);
-// removeAllItems(&ll);
-// break;
-
-
-void createStackFromLinkedList(LinkedList *ll, Stack *s)
-{
-	if(ll->head == NULL)
+	if (s == NULL || ll == NULL)
 		return;
-	
-	LinkedList *new_list = malloc(sizeof(LinkedList));
-	new_list->head = NULL;
-	new_list->size = 0;
 
-	for(int i = 0 ; i < ll->size ; i++)
-	{
-		ListNode *new_Node = malloc(sizeof(ListNode));
-		new_Node->item = findNode(ll, i)->item;
-		new_Node->next = NULL;
+	removeAllItems(&(s->ll)); 
 
-		if(new_list->head == NULL)
-			new_list->head = new_Node;
-		else
-		{
-			new_Node->next = new_list->head;
-			new_list->head = new_Node;
-		}
-		
-		new_list->size++;
+	curr = ll->head;
+
+	while (curr != NULL){
+		push(s, curr->item);
+		curr = curr->next;
 	}
-
-	s->ll.head = new_list->head;
-	s->ll.size = new_list->size;
-
-	free(new_list);
 }
 
-void removeEvenValues(Stack *s)
-{
-	if(s->ll.head == NULL)
+void removeEvenValues(Stack *s){
+	ListNode *curr, *prev, *tmp;
+
+	if (s == NULL || s->ll.head == NULL)
 		return;
 
-	LinkedList *new_list = malloc(sizeof(LinkedList));
-	new_list->head = NULL;
-	new_list->size = 0;
+	curr = s->ll.head;
+	prev = NULL;
 
-	for(int i = 0; i<s->ll.size;i++)
-	{
-		int val = findNode(&(s->ll), i)->item;
-
-		if(val%2 !=0)
-		{
-			ListNode *new_Node = malloc(sizeof(ListNode));
-			new_Node->item = val;
-			new_Node->next = NULL;
-
-			if (new_list->head == NULL)
-				new_list->head = new_Node;
-			else
-			{
-				new_Node->next = new_list->head;
-				new_list->head = new_Node;
-			}
-
-			new_list->size++;
+	while (curr != NULL){
+		if (curr->item % 2 == 0){ // 짝
+            if (prev == NULL) { // 첫 노드 제거
+                s->ll.head = curr->next;
+                free(curr);
+                curr = s->ll.head;
+            } else { // 중간/마지막 노드 제거
+                prev->next = curr->next;
+                free(curr);
+                curr = prev->next;
+            }
+            s->ll.size--;
+		}else{ // 홀
+			prev = curr;
+			curr = curr->next;
 		}
 	}
-
-	for(int i = 0; i<s->ll.size-1;i++)
-	{
-		ListNode *y = s->ll.head;
-		s->ll.head = s->ll.head->next;
-
-		free(y);
-	}
-	
-	free(s->ll.head);
-
-	s->ll.head = new_list->head;
-	s->ll.size = new_list->size;
-
-	free(new_list);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
