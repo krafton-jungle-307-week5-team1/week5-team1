@@ -36,6 +36,7 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 int sumOfOddNodes(BTNode *root);
+//값이 홀수인 경우 더해주기 node item값을 더해주기 
 
 BTNode *createBTNode(int item);
 

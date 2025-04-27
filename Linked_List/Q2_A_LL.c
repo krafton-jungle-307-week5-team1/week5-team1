@@ -103,7 +103,10 @@ int main()
 
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
-    /* add your code here */
+    /* add your code here
+	1.머지는 1번 리스트의 요소 수 만큼만 할 수 있음
+	2.마지막에 node가 가리킬게 없으면 list1 stop 
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

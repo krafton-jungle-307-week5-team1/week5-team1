@@ -34,6 +34,7 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 int countOneChildNodes(BTNode *node);
+//자식이 하나인 노드만 카운트해서 출력 
 
 BTNode *createBTNode(int item);
 

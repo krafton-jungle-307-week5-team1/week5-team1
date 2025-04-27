@@ -36,6 +36,7 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 int smallestValue(BTNode *node);
+//가장 작은거 출력, 재귀로 찾아서 출력
 
 BTNode *createBTNode(int item);
 

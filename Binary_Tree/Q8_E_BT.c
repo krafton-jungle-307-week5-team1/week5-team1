@@ -36,6 +36,8 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 int hasGreatGrandchild(BTNode *node);
+//자식의 자식의 자식 count를 내려갔다가 자기까지 올라오면서
+//count가 3이상이면 그 노드를 출력하기
 
 BTNode *createBTNode(int item);
 
@@ -102,7 +104,17 @@ int main()
 
 int hasGreatGrandchild(BTNode *node)
 {
-	/* add your code here */
+	if(node == NULL)
+      return;
+    int left= hasGreatGrandchild(node->left);
+    int right= hasGreatGrandchild(node->left);
+    int depth=(left>right? left : right) +1;
+
+    if (depth>=3)
+       printf("%d",node->item);
+
+    return depth;
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////

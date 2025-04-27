@@ -103,7 +103,54 @@ int main()
 
 int isStackPairwiseConsecutive(Stack *s)
 {
-  /* add your code here */
+  /*
+
+  연결리스트 기반의 스택 s
+  
+
+  
+  add your code here 
+  True:연속
+  False:불연속
+  짝지어서 연속 2개씩 
+  각 짝이 연속된 수인지 확인
+
+  오른차순 연속이여도 가능 내림차순 연속이여도 가능
+  
+  마지막에 원상복구 안시켜도 되는지
+  
+  값을 2개만 비교해도 되는거면 다르게 생각 
+
+  */
+
+
+
+  if (s == NULL || s->ll.head == NULL)
+      return 1; //empty stack은 true 처리
+
+  if(s->ll.size %2 !=0)
+    return 0;
+	
+  ListNode *curr = s->ll.head; 
+  //*curr 변수에 스택의 맨 앞부분 넣어주기
+
+  while(curr != NULL && curr->next !=NULL){
+
+	int a =curr->item;
+	int b =curr->next->item ;
+
+	if(abs(a-b) !=1) //절댓값으로 확인해주기 
+	  return 0;
+
+	curr = curr->next->next ; 
+	//연속한 수 확인했으니까 2칸씩 이동하기
+  }
+  //만약 중간에 연속이 아닌 값이 있으면
+  //0 반환해서 여기까지 올 수가 없음
+
+
+  return 1;
+  //여기까지 왔으면 모두 연속된 쌍임
 }
 
 //////////////////////////////////////////////////////////////////////////////////

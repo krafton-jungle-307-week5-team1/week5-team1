@@ -2,7 +2,12 @@
 
 /* CE1007/CZ1007 Data Structures
 Lab Test: Section C - Stack and Queue Questions
-Purpose: Implementing the required functions for Question 1 */
+Purpose: Implementing the required functions for Question 1 
+
+연결리스트로 받아서 큐로 만들어주기
+
+
+*/
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -121,16 +126,23 @@ void createQueueFromLinkedList(LinkedList *ll, Queue *q)
 
 void removeOddValues(Queue *q)
 {
-	/* add your code here */
+	/* add your code here 
+	짝수 들어가면 남기고
+	홀수 들어오면 skip 
+	리스트 만들어서 넣어주기
+	큐안에서 값을 없애는 방법이 아니면 리스트 만들어야 할듯?
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
 void enqueue(Queue *q, int item) {
 	insertNode(&(q->ll), q->ll.size, item);
+	//마지막 node의 next가 새 노드(삽입된)를 가리킴
 }
 
 int dequeue(Queue *q) {
+	//head를 다음 노드로 넘기고 삭제
 	int item;
 
 	if (!isEmptyQueue(q)) {

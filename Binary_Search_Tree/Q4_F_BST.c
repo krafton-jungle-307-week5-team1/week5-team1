@@ -4,6 +4,23 @@
 Lab Test: Section F - Binary Search Trees Questions
 Purpose: Implementing the required functions for Question 4 */
 
+
+/*
+4번은 스택 1개 5번은 스택 2개 
+
+본인 넣고 left넣고 
+
+왼쪽으로 들어갈때는 visited에 저장
+오른쪽은 중복될수도 있으니까
+변수를 하나 설정해서 방문을 했으면 위로 건너뛰기! 
+
+
+BSTNode *prevVisited 
+
+
+
+
+*/
 //////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>

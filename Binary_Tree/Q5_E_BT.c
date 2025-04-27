@@ -36,6 +36,14 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 void mirrorTree(BTNode *node);
+/*
+트리 거울상 
+
+임시저장용 BTnode하나 생성했음
+좌우가 완전히 뒤집히도록
+*/
+
+
 
 BTNode *createBTNode(int item);
 
@@ -105,7 +113,16 @@ int main()
 
 void mirrorTree(BTNode *node)
 {
-	/* add your code here */
+	if(node == NULL)
+      return;
+
+    mirrorTree(node->left);
+    mirrorTree(node->right);
+
+    BTNode *temp=node->left;
+    node->left = node->right;
+    node->right=temp;
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////

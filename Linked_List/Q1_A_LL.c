@@ -90,7 +90,47 @@ int main()
 
 int insertSortedLL(LinkedList *ll, int item)
 {
-	/* add your code here */
+	/* 
+	1.if list가 없으면 에러
+	2.사용자로 부터 정수 입력받기
+	3.빈 리스트 인 경우 , 바로 0 번 위치에 삽입
+	4.리스트 전체 순회& 중복 검사 및 삽입 위치 찾기
+	중복 발견 에러 처리& index 위치에 삽입
+
+	5.insetNode 함수 안에서 사용하기
+	
+	*/
+
+	/*
+	중간에 어떠한 숫자를 삽입해도 순서대로 정렬해주는 함수
+	*/
+	if(ll ==NULL)
+	  return -1; // 리스트가 없으면 에러
+	ListNode *cur = ll->head; //현재 노드를 ll의 head로 넣어주기
+	int index =0 ; //insertNode 함수로 넣어주기 위해 필요함
+
+	if (cur == NULL){
+		insertNode(ll,0,item); //만약 비어있으면 첫번째 인덱스 위치에 item넣기
+		return 0;
+	}
+
+	while (cur != NULL){
+		//현재 노드가 맨 끝 노드 (NULL) 가 아닐 때 까지
+		if (cur->item == item)
+		   return -1; // 만약 이미 item 값이 있다면 에러 출력
+		if (cur->item > item) 
+		//cur의 node의 멤버 변수인 item 값이 내가 넣으려는 item 보다 크다면
+		//위치를 지나친거임
+		   break; //삽입 위치 도달
+		cur = cur->next; //위의 if문에서 걸리지 않았다면 그 다음 노드로 순회 
+		index++;
+	}
+
+	if(insertNode(ll,index,item)==0) //삽입 성공시 0반환
+		return 0;
+	else // 삽입 실패시 -1 반환 
+		return -1;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

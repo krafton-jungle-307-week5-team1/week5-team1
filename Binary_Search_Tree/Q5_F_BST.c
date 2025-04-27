@@ -91,7 +91,10 @@ int main()
 
 void postOrderIterativeS2(BSTNode *root)
 {
-	 /* add your code here */
+	 /* add your code here
+	 스택 2개 사용하기
+	 두번째 스택을 사용해서 먼저들어갔던 스택 순서 뒤집기기
+	 */
 }
 
 /* Given a binary search tree and a key, this function

@@ -2,7 +2,12 @@
 
 /* CE1007/CZ1007 Data Structures
 Lab Test: Section C - Stack and Queue Questions
-Purpose: Implementing the required functions for Question 2 */
+Purpose: Implementing the required functions for Question 2 
+
+연결리스트를 스택으로 만들어주기 계속 head를 만들어주기
+pop하면 head 부터 나오게
+
+*/
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +32,10 @@ typedef struct _linkedlist
 typedef struct _stack
 {
 	LinkedList ll;
+	/*ll.head를 스택의 top으로 사용
+	push: 새 노드를 앞에 붙인다
+	pop: head를 제거하고 다음 노드를 새 top으로
+	*/
 }Stack;  // You should not change the definition of Stack
 
 ///////////////////////// function prototypes ////////////////////////////////////

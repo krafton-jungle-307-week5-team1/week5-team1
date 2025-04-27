@@ -30,7 +30,13 @@ typedef struct _stack{
 ///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototypes of these functions
+//트리가 동일하니 안하니 
 int identical(BTNode *tree1, BTNode *tree2);
+/*
+재귀함수로 풀었다. => 거의 다 재귀함수
+자식노드가 없을 때 까지 내려감
+공백이 아니고 다르지도 않고 => true
+*/
 
 BTNode* createBTNode(int item);
 

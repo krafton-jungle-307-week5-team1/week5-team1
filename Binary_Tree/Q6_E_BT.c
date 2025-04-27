@@ -36,6 +36,7 @@ typedef struct _stack
 
 // You should not change the prototypes of these functions
 void printSmallerValues(BTNode *node, int m);
+//특정 값보다 작기만 하면 출력해주기
 
 BTNode *createBTNode(int item);
 

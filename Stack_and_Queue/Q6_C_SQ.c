@@ -89,9 +89,13 @@ int main()
 			scanf("%d", &i);
 			removeUntil(&s,i); // You need to code this function
 			printf("The resulting stack after removing values until the given value: ");
+			//위의 함수를 실행한 결과 스택을 출력
 			printList(&(s.ll));
 			removeAllItemsFromStack(&s);
 			removeAllItems(&ll);
+			/*프로그램 종료시 연결리스트까지 완전히 정리해서
+			메모리 누수를 방지한다.
+			*/
 			break;
 		case 0:
 			removeAllItemsFromStack(&s);
@@ -111,24 +115,30 @@ int main()
 
 void removeUntil(Stack *s, int value)
 {
-/* add your code here */
+	while (!isEmptyStack(s) && peek(s) != value) {
+        pop(s);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
 void removeAllItemsFromStack(Stack *s)
 {
+	
 	if (s == NULL)
 		return;
 	while (s->ll.head != NULL)
 	{
 		pop(s);
+		//스택은 무조건 front에서 삽입삭제
+		//즉 head에서 삽입삭제 다 이뤄진다.
 	}
 }
 
 
 void removeAllItems(LinkedList *ll)
 {
+	//연결리스트 관련 함수 1
 	ListNode *cur = ll->head;
 	ListNode *tmp;
 
@@ -146,10 +156,12 @@ void removeAllItems(LinkedList *ll)
 void push(Stack *s, int item)
 {
 	insertNode(&(s->ll), 0, item);
+	//앞에서 삽입
 }
 
 int pop(Stack *s)
-{
+{   
+	//앞에서 삭제(큐와의 차이점)
 	int item;
 	if (s->ll.head != NULL)
 	{

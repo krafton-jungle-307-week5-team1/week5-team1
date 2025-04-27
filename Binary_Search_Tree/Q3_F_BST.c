@@ -18,6 +18,8 @@ typedef struct _bstnode{
 } BSTNode;   // You should not change the definition of BSTNode
 
 typedef struct _stackNode{
+	//재귀 없이 순회할 때 필요한 스택 자료구조
+	//실제 값이 아닌 포인터로 트리 노드를 저장 한다.
 	BSTNode *data;
 	struct _stackNode *next;
 }StackNode; // You should not change the definition of StackNode
@@ -90,8 +92,31 @@ int main()
 //////////////////////////////////////////////////////////////////////////////////
 
 void preOrderIterative(BSTNode *root)
+/*iterative : 반복적인
+이진 탐색트리를 비재귀 방식으로 전위 순회 하시오
+전위 순회 : 루트를 맨 처음에 탐색
+
+//스택 사용하기 
+*/
 {
-	 /* add your code here */
+
+	if(root == NULL)
+	  return;
+	Stack stack;
+	stack.top = NULL;
+
+	push(&stack,root);
+
+	while(!isEmptyStack(&stack)){
+		BSTNode *current =pop(&stack);
+		printf("%d",current->item);
+
+		if(current->right)
+		  push(&stack,current->right);
+		if(current->left)
+		  push(&stack,current->left);
+	}
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////
